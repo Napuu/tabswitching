@@ -1,0 +1,39 @@
+{
+    "name": "tabswitching",
+    "version": "1.0",
+    "description": "tabswitching",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true 
+    },
+    "permissions": [
+        "tabs"
+    ],
+    "commands": {
+        "moveright": {
+            "suggested_key": {
+                "default": "Alt+L"
+            },
+            "description": "right"
+            },
+        "moveleft": {
+            "suggested_key": {
+                "default": "Alt+H"
+            },
+            "description": "left"
+        },
+        "togglewhatsapp": {
+            "suggested_key": {
+                "default": "Alt+W"
+            },
+            "description": "whatsapp"
+        },
+        "toggletelegram": {
+            "suggested_key": {
+                "default": "Alt+T"
+            },
+            "description": "telegram"
+        }
+    },
+    "manifest_version": 2
+}
