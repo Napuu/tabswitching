@@ -22,13 +22,13 @@
             },
             "description": "left"
         },
-        "togglewhatsapp": {
+        "toggleWhatsApp": {
             "suggested_key": {
                 "default": "Alt+W"
             },
             "description": "whatsapp"
         },
-        "toggletelegram": {
+        "toggleTelegram": {
             "suggested_key": {
                 "default": "Alt+T"
             },
