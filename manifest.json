@@ -15,7 +15,7 @@
                 "default": "Alt+L"
             },
             "description": "right"
-            },
+        },
         "moveleft": {
             "suggested_key": {
                 "default": "Alt+H"

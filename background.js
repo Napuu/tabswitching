@@ -11,6 +11,7 @@ chrome.tabs.onHighlighted.addListener(function (c) {
         });
     });
 });
+
 chrome.commands.onCommand.addListener(function(command) {
     if (command.includes("move")) {
         getTabsCurrentWindow(function (tabs) {
@@ -32,7 +33,9 @@ chrome.commands.onCommand.addListener(function(command) {
             getActiveTab(function (currentTab) {
                 var app = command.substring(6);
                 if (toggled.to != app) {
-                    chrome.tabs.query({windowType: "normal", currentWindow: true, title: ("*" + app + "*")}, function (tabs) {
+                    var props = {windowType: "normal", currentWindow: true, title: ("*" + app + "*")};
+                    // if (app == "YouTube") props.audible = true;
+                    chrome.tabs.query(props, function (tabs) {
                         activateTab(tabs[0].id);
                         toggled.to = app;
                         toggled.from = currentTab;
