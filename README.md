@@ -6,7 +6,7 @@ To install:<br>
 <ol>
 <li>Download repo as .zip and unzip it somewhere</li>
 <li>On browser go to chrome://extensions</li>
-<li>Load unpacked extension and select directory where you placed contents of zip-file</li>
+<li>Load unpacked extension and select directory where you placed contents of zip-file (must have developer-mode on)</li>
 <li>Done!</li>
 </ol>
 <p>
