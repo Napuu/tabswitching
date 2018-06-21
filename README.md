@@ -1,6 +1,15 @@
 With this chrome-extension you can move between tabs and toggle to certain tabs and back.
 
 <p>
+To install:<br>
+
+<ol>
+<li>Download repo as .zip and unzip it somewhere</li>
+<li>On browser go to chrome://extensions</li>
+<li>Load unpacked extension and select directory where you placed contents of zip-file</li>
+<li>Done!</li>
+</ol>
+<p>
 Commands <br>
 <table border="black solid 1px">
 	<tr>
