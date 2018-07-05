@@ -1,4 +1,5 @@
-With this chrome-extension you can move between tabs and toggle to certain tabs and back.
+<h1>Tabswitching</h1>
+<p>With this chrome-extension you can move between tabs and toggle to certain tabs and back.</p>
 
 <p>
 To install:<br>
