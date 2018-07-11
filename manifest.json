@@ -6,34 +6,19 @@
         "scripts": ["background.js"],
         "persistent": true 
     },
-    "permissions": [
-        "tabs"
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript.js"]
+        } 
     ],
-    "commands": {
-        "moveright": {
-            "suggested_key": {
-                "default": "Alt+L"
-            },
-            "description": "right"
-        },
-        "moveleft": {
-            "suggested_key": {
-                "default": "Alt+H"
-            },
-            "description": "left"
-        },
-        "toggleWhatsApp": {
-            "suggested_key": {
-                "default": "Alt+W"
-            },
-            "description": "whatsapp"
-        },
-        "toggleTelegram": {
-            "suggested_key": {
-                "default": "Alt+T"
-            },
-            "description": "telegram"
-        }
+    "permissions": [
+        "tabs",
+        "storage"
+    ], 
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true 
     },
     "manifest_version": 2
 }
