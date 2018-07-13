@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tabswitcher options"</title>
+        <title>Tabswitcher options</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+            #optionsContainer {
+                width: 1000px;
+                border: black solid 1px;
+            }
+        </style>
     </head>
 
     <body>
         moi
-        <script>
-            alert("options");
-        </script>
+        <button id="reloadTabs">Reload all tabs</button>
+        <div id="optionsContainer" class="container"></div>
+        <script src="jquery.js"></script>
+        <script src="options.js"></script>
     </body>
 
 </html>

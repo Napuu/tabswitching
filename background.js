@@ -1,11 +1,13 @@
 //this means toggling to some specific tab and back
 //for example you toggle "to" whatsapp "from" certain tab
 
-chrome.tabs.query({}, function (tabs) {
-    for (let i = 0; i < tabs.length; i++) {
-        chrome.tabs.reload(tabs[i].id);
-    }
-});
+// reload all tabs so updated version of extension is in use
+// chrome.tabs.query({}, function (tabs) {
+    // for (let i = 0; i < tabs.length; i++) {
+        // chrome.tabs.reload(tabs[i].id);
+    // }
+// });
+
 var toggled = {"to": -1, "from": -1};
 chrome.tabs.onHighlighted.addListener(function (c) {
     getTabsCurrentWindow(function (tabs) {
@@ -18,6 +20,7 @@ chrome.tabs.onHighlighted.addListener(function (c) {
     });
 });
 
+var DEBUG = true;
 chrome.runtime.onMessage.addListener(function(request , sender, sendResponse) {
     let command = request.msg;
     if (command.includes("move")) {

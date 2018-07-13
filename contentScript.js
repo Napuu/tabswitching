@@ -15,6 +15,8 @@ function loadOptions(_options, callback) {
         if (Object.keys(res).length == 0) {
             if (DEBUG) console.log("no saved options found");
             setDefaults(_options, callback);
+        } else {
+            currentOptions.val = res["tabswitcher_options"];
         }
     });
 }
@@ -27,7 +29,7 @@ document.addEventListener("keydown", ev => {
         let features = currentOptions.val[a].eventFeatures;
         // console.log(features);
         for (b in features) {
-            // console.log(ev[b] + ", " + features[b]);
+            console.log(ev[b] + ", " + features[b]);
             if (ev[b] != features[b]) fail = true;
             // console.log(features[features.keys()[i]]);
             // if (currentOptions[a].eventFeatures[b]
@@ -35,6 +37,7 @@ document.addEventListener("keydown", ev => {
         if (!fail) {
             if (DEBUG) console.log(currentOptions.val[a].action);
             chrome.runtime.sendMessage({msg: currentOptions.val[a].action}, function (resp) {});
+            console.log("sending message");
         }
     }
 });
@@ -52,6 +55,7 @@ function setDefaults(_options, callback) {
         action: "toggleWhatsApp",
         disabled: false
     }];
+    // chrome.storage.sync.set({"tabswitcher_options": _options.val});
     callback();
 }
 function doSomething() {
