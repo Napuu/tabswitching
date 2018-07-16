@@ -26,19 +26,58 @@ console.log("moikkamoI");
 
 var co = $("#optionsContainer")[0];
 
-addField(co, "field1");
-addField(co, "field2");
+var fields = {};
+
+// this needs to be loaded from somewhere
+var configuration = [];
+
+function start() {
+    //chrome.storage.sync.get(["configuration"], (res) => {
+        //configuration = res["configuration"];
+        //for (cc in configuration) {
+            //for (i in res) {
+                //let id = "field" + nn;
+                //addField(co, id);
+                //nn++;
+                //$("#" + id + "action1").val(cc["mode"]);
+                //$("#" + id + "action2").val(cc["direction"]);
+                //$("#" + id + "action3").val(cc["pattern"]);
+                //$("#" + id + "action4").prop("checked", cc["audio"]);
+                //$("#" + id + "shortcut1").val(cc["key"]);
+                //$("#" + id + "shortcut2").prop("checked", cc["shiftKey"]);
+                //$("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
+                //$("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
+                //$("#" + id + "shortcut8").prop("checked", cc["altKey"]);
+                //[>
+                //cc["mode"] = $("#" + id + "action1").val();
+                //cc["direction"] = $("#" + id + "action2").val();
+                //cc["pattern"] = $("#" + id + "action3").val();
+                //cc["audio"] = $("#" + id + "action4").is(":checked");
+                //cc["key"] = $("#" + id + "shortcut1").val();
+                //cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
+                //cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
+                //cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
+                //cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
+                //*/
+                
+            //}
+        //}
+    //});
+    addField2();
+    addField2();
+    
+}
 var nn = 0;
 function addField2() {
-    addField(co, "field" + nn);
+    addField(co, "field" + nn); 
     nn++;
 
 }
-function addField(container, id) {
-     
+function addField(container, id) {  
+    fields[id] = true;
     $("#belowOptionsContainer").css("top", $(co).offset().top + $(co).height());
     let row = htmlToElements(
-    "<div class='" + id +"'>" +
+    "<div id='" + id +"'>" +
         "<div class='row'>" + 
             "<div class='col-5'>" +
                 "Action" +
@@ -63,7 +102,7 @@ function addField(container, id) {
                     "<option>right</option>" +
                     "<option>left</option>" +
                 "</select>" +
-                "<input id='" + id + "action3' class='form-control form-control-sm' type='text'></input>" +
+                "<input id='" + id + "action3' class='validation-needed form-control form-control-sm' type='text'></input>" +
                 "<div class='invalid-feedback'>Required field</div>" +
             "</div>" +
             "<div class='col-1'>" + 
@@ -72,7 +111,7 @@ function addField(container, id) {
 
             "</div>" + 
             "<div class='col-1'>" +
-                "<input id='" + id + "shortcut1' class='form-control form-control-sm' type='text'></input>" + 
+                "<input id='" + id + "shortcut1' class='validation-needed form-control form-control-sm' type='text'></input>" + 
                 "<div class='invalid-feedback' style='white-space: nowrap;'>One character a-z or 0-9 required</div>" +
             "</div>" +
             "<div class='col-4'>" +
@@ -108,7 +147,9 @@ function addField(container, id) {
 
     $("#" + id + "delete").on("click", ev => {
         console.log("delete this"); 
-        $("." + ev.target.id.substring(0,6)).remove();
+        delete fields[ev.target.id.substring(0,6)];
+        console.log(fields);
+        $("#" + ev.target.id.substring(0,6)).remove();
     });
     $("#" + id + "action3").on("keyup", ev => {
         let val = ev.target.value;
@@ -174,58 +215,6 @@ function addField(container, id) {
 
     });
     $(document.body).append(container);
-    // let container = document.createElement("div");
-    // container.id = id;
-
-    // let select1 = document.createElement("select");
-    // select1.id = id + "Select";
-
-    // let option1 = document.createElement("option");
-    // option1.value = "move";
-    // option1.innerHTML = "move";
-    
-    // let option2 = document.createElement("option");
-    // option2.value = "toggle";
-    // option2.innerHTML = "toggle";
-
-    // select1.appendChild(option1);
-    // select1.appendChild(option2);
-
-    // let select11 = document.createElement("select");
-    // select11.class = "selectpicker";
-    // let option111 = document.createElement("option");
-    // option111.value = "left";
-    // option111.innerHTML = "left";
-
-    // let option112 = document.createElement("select");
-    // option112.value = "right";
-    // option112.innerHTML = "right";
-
-    // select11.appendChild(option111);
-    // select11.appendChild(option112);
-
-    // let input12 = document.createElement("input");
-    // input12.type = "text";
-    // // input12.style.display = "none";
-    // $(input12).hide();
-
-    // container.appendChild(select1);
-    // container.appendChild(select11);
-    // container.appendChild(input12);
-    // select1.addEventListener("change", function (ev) {
-        // if (select1.value == "move") {
-            // $(select11).show();
-            // $(input12).hide();
-            // // select11.style.display = "inline";
-            // // input12.style.display = "none";
-        // } else {
-            // $(select11).hide();
-            // $(input12).show();
-            // // select11.style.display = "none";
-            // // input12.style.display = "inline";
-        // }
-    // });
-    // document.body.appendChild(container);
 }
 function htmlToElements(html) {
     var template = document.createElement('template');
@@ -234,7 +223,50 @@ function htmlToElements(html) {
 }
 function saveChanges() {
     console.log("m");
-    $("#optionsContainer input").trigger("change");
+    $(".validation-needed").each((i, element) => {
+        console.log("visible", $(element).is(":visible"));
+        if ($(element).is(":visible")) {
+            $(element).trigger("keyup");
+        }
+        
+    });
+    let fail = false;
+    $(".is-invalid").each((i, element) => {
+        fail = true;
+        return;
+    });
+    if (!fail) {
+        console.log("able to save current changes");
+        
+        configuration = [];
+        for (id in fields) {
+            let cc = {};
+            cc["mode"] = $("#" + id + "action1").val();
+            cc["direction"] = $("#" + id + "action2").val();
+            cc["pattern"] = $("#" + id + "action3").val();
+            cc["audio"] = $("#" + id + "action4").is(":checked");
+            cc["key"] = $("#" + id + "shortcut1").val();
+            cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
+            cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
+            cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
+            cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
+            configuration.push(cc);
+            //let str = "[id^='" + id + "']";
+            //$(str).each((i, element) => {
+                //console.log(i);
+                //console.log(element); 
+            //});
+            
+        }
+        console.log(configuration);
+        //chrome.storage.sync.set({"configuration": configuration}, function() {
+            //saved
+        //});
+    }
+
+    else {
+        console.log("not able to save current changes");
+    }
 }
 function isLetter(str) {
     if (str.length != 1) return false;
