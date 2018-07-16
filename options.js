@@ -41,7 +41,7 @@ function addField(container, id) {
     "<div class='" + id +"'>" +
         "<div class='row'>" + 
             "<div class='col-5'>" +
-                "moi" +
+                "Action" +
             "</div>" + 
             "<div class='col-1'>" +
                 "Key" +
@@ -97,9 +97,9 @@ function addField(container, id) {
                 "<button id='" + id + "delete' type='button' class='btn-danger'>Delete</button>" +
             "</div>" +
         "</div>" +
-        "<div class='row ml-1'>" +
-            "<div class='col'>" +
-                "<small class='text-muted'>Explanation: <span id=" + id + "explanation</span></small>" +
+        "<div class='row ml-1 mb-3'>" +
+            "<div class='col-5'>" +
+                "<small class='text-muted'>Explanation: <span id='" + id + "explanation'></span></small>" +
             "</div>" +
         "</div>" +
     "</div>");
@@ -145,6 +145,34 @@ function addField(container, id) {
         }
     });
 
+    // let patternActions = ".";
+    // for (let i = 1; i <= 5; i++) id
+    // $(".
+
+    //gotta update explanation
+    
+
+    $("[id*='" + id + "action").on("change keyup", ev => {
+        console.log("change/keyup");
+        let expl = "";
+        if ($("#" + id + "action1").val() == "move") {
+            expl += "Move to tab on the ";
+            if ($("#" + id + "action2").val() == "right") expl += "right.";
+            else expl += "left.";
+        } else {
+            expl += "Move to the first tab with title containing word \"" + $("#" + id + "action3").val() + "\"";
+            if ($("#" + id + "action4").is(":checked")) expl += " and playing audio";
+            expl += ". Pressing shortcut again returns you to the original tab.";
+        }
+        
+        console.log(expl);
+        console.log("#" + id + "explanation");
+        $("#" + id + "explanation").text(expl);
+    });
+    $(document.body).ready(() => {
+        $("#" + id + "action1").trigger("change");
+
+    });
     $(document.body).append(container);
     // let container = document.createElement("div");
     // container.id = id;
@@ -203,6 +231,10 @@ function htmlToElements(html) {
     var template = document.createElement('template');
     template.innerHTML = html;
     return template.content.childNodes;
+}
+function saveChanges() {
+    console.log("m");
+    $("#optionsContainer input").trigger("change");
 }
 function isLetter(str) {
     if (str.length != 1) return false;
