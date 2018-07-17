@@ -1,4 +1,4 @@
-console.log("moikkamoI");
+var DEBUG = false;
 function forceReload() {
     if (!confirm("Are you sure you want to reload all tabs? (nonsaved changes will be lost)")) return;
     chrome.tabs.query({}, function (tabs) {
@@ -11,14 +11,13 @@ function forceReload() {
 
 $(document.body).ready(start);
 $("#reloadTabs").on("click", (ev) => { forceReload(); });
-$("#addButton").on("click", addField2);
+$("#addButton").on("click", addFieldWithoutName);
 $("#saveButton").on("click", saveChanges);
 
 var co = $("#optionsContainer")[0];
 
 var fields = {};
 
-// this needs to be loaded from somewhere
 var configuration = [];
 
 function start() {
@@ -39,26 +38,14 @@ function start() {
             $("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
             $("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
             $("#" + id + "shortcut8").prop("checked", cc["altKey"]);
-            $("#" + id + "disabled").prop("checked", cc["disabled"]);
-            // [>
-            // cc["mode"] = $("#" + id + "action1").val();
-            // cc["direction"] = $("#" + id + "action2").val();
-            // cc["pattern"] = $("#" + id + "action3").val();
-            // cc["audio"] = $("#" + id + "action4").is(":checked");
-            // cc["key"] = $("#" + id + "shortcut1").val();
-            // cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
-            // cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
-            // cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
-            // cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
-            // */
-            
+            $("#" + id + "disabled").prop("checked", cc["disabled"]); 
         }
     });
-    console.log("??");
+    if (DEBUG) console.log("??");
     
 }
 var nn = 0;
-function addField2() {
+function addFieldWithoutName() {
     addField(co, "field" + nn); 
     nn++;
 
@@ -140,9 +127,9 @@ function addField(container, id) {
 
 
     $("#" + id + "delete").on("click", ev => {
-        console.log("delete this"); 
+        if (DEBUG) console.log("delete this"); 
         delete fields[ev.target.id.substring(0,6)];
-        console.log(fields);
+        if (DEBUG) console.log(fields);
         $("#" + ev.target.id.substring(0,6)).remove();
     });
     $("#" + id + "action3").on("keyup", ev => {
@@ -157,10 +144,10 @@ function addField(container, id) {
 
     //validation and stuff for shortcut1
     $("#" + id + "shortcut1")/*.css("width", parseInt($("#" + id + "shortcut1").css("height")) * 2)*/.on("keyup", ev => {
-        console.log(ev.target.value); 
+        if (DEBUG) console.log(ev.target.value); 
         let val = ev.target.value;
         let valid = /^([a-z]|[0-9]){1}$/.test(val);
-        console.log(valid);
+        if (DEBUG) console.log(valid);
         if (!valid) {
             $(ev.target).addClass("is-invalid").removeClass("is-valid");
         } else {
@@ -176,9 +163,9 @@ function addField(container, id) {
             $("#" + id + "action3, #" + id + "action4, #" + id + "action5").hide().removeClass("is-valid is-invalid").val(""); 
         } else {
             $("#" + id + "action2").hide(); 
-            // console.log(id);
-            // console.log(ev.target.value);
-            console.log("setting val to 0");
+            // if (DEBUG) console.log(id);
+            // if (DEBUG) console.log(ev.target.value);
+            if (DEBUG) console.log("setting val to 0");
             $("#" + id + "action3, #" + id + "action4, #" + id + "action5").show().removeClass("is-valid is-invalid");
         }
     });
@@ -191,7 +178,7 @@ function addField(container, id) {
     
 
     $("[id*='" + id + "action").on("change keyup", ev => {
-        console.log("change/keyup");
+        if (DEBUG) console.log("change/keyup");
         let expl = "";
         if ($("#" + id + "action1").val() == "move") {
             expl += "Move to tab on the ";
@@ -203,8 +190,8 @@ function addField(container, id) {
             expl += ". Pressing shortcut again returns you to the original tab.";
         }
         
-        console.log(expl);
-        console.log("#" + id + "explanation");
+        if (DEBUG) console.log(expl);
+        if (DEBUG) console.log("#" + id + "explanation");
         $("#" + id + "explanation").text(expl);
     });
     $(document.body).ready(() => {
@@ -219,9 +206,9 @@ function htmlToElements(html) {
     return template.content.childNodes;
 }
 function saveChanges() {
-    console.log("m");
+    if (DEBUG) console.log("m");
     $(".validation-needed").each((i, element) => {
-        console.log("visible", $(element).is(":visible"));
+        if (DEBUG) console.log("visible", $(element).is(":visible"));
         if ($(element).is(":visible")) {
             $(element).trigger("keyup");
         }
@@ -233,7 +220,7 @@ function saveChanges() {
         return;
     });
     if (!fail) {
-        console.log("able to save current changes");
+        if (DEBUG) console.log("able to save current changes");
         
         configuration = [];
         let backgroundConfig = [];
@@ -270,17 +257,17 @@ function saveChanges() {
             }
 
             cc2.audio = cc["audio"];
-            console.log(cc2);
+            if (DEBUG) console.log(cc2);
             backgroundConfig.push(cc2);
             //let str = "[id^='" + id + "']";
             //$(str).each((i, element) => {
-                //console.log(i);
-                //console.log(element); 
+                //if (DEBUG) console.log(i);
+                //if (DEBUG) console.log(element); 
             //});
             
         }
-        console.log(backgroundConfig);
-        console.log(configuration);
+        if (DEBUG) console.log(backgroundConfig);
+        if (DEBUG) console.log(configuration);
         chrome.storage.sync.set({"tabswitcher_options": backgroundConfig}, () => {});
         chrome.storage.sync.set({"configuration": configuration}, function() {
             // saved
@@ -289,7 +276,7 @@ function saveChanges() {
     }
 
     else {
-        console.log("not able to save current changes");
+        if (DEBUG) console.log("not able to save current changes");
     }
 }
 function isLetter(str) {

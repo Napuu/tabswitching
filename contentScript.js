@@ -1,4 +1,4 @@
-var DEBUG = true;
+var DEBUG = false;
 if (DEBUG) console.log("content script attached");
 
 // chrome.storage.sync.set({"key1": "value1"}, function() {
@@ -38,7 +38,7 @@ document.addEventListener("keydown", ev => {
         if (!fail) {
             if (DEBUG) console.log(currentOptions.val[a].action);
             chrome.runtime.sendMessage({msg: currentOptions.val[a].action, audible: currentOptions.val[a].audio, disabled: currentOptions.val[a].disabled}, function (resp) {});
-            console.log("sending message");
+            if (DEBUG) console.log("sending message");
         }
     }
 });
