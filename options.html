@@ -5,19 +5,37 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             #optionsContainer {
+                margin: 10px;
                 width: 1000px;
-                border: black solid 1px;
+                border-bottom: black solid 1px;
+                border-left: black solid 1px;
+                border-right: black solid 1px;
+            }
+            [class^=col] {
+            }
+            .row {
+            }
+            .firstrow {
+                border-top: black solid 1px;
+            }
+            #lastrow {
+                border-top: black solid 1px;
             }
         </style>
     </head>
 
     <body>
-        moi.k
-        <button id="reloadTabs">Reload all tabs</button>
-        <div id="optionsContainer" class="container"></div>
-        <div id="belowOptionsContainer">
-            <button id="addButton">Add command</button>
-            <button id="saveButton">Save changes</button>
+        <div id="optionsContainer" class="container">
+            <div class="row pt-3 pl-3 mb-3" id="lastrow">
+                <div class="col">
+                    <button class="btn-primary" id="addButton">Add command</button>
+                    <button class="btn-success" id="saveButton">Save changes</button>
+                    <button class="btn-warning" id="reloadTabs">Reload all tabs</button>
+                </div>
+                <div class="col">
+                    <small id="rememberReload" class="text-muted">Reloading tabs is needed to apply changes</small>
+                </div>
+            </div>
         </div>
         <script src="jquery.js"></script>
         <script src="options.js"></script>

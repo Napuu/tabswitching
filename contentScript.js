@@ -16,6 +16,7 @@ function loadOptions(_options, callback) {
             if (DEBUG) console.log("no saved options found");
             setDefaults(_options, callback);
         } else {
+            if (DEBUG) console.log("options loaded");
             currentOptions.val = res["tabswitcher_options"];
         }
     });
@@ -36,7 +37,7 @@ document.addEventListener("keydown", ev => {
         }
         if (!fail) {
             if (DEBUG) console.log(currentOptions.val[a].action);
-            chrome.runtime.sendMessage({msg: currentOptions.val[a].action}, function (resp) {});
+            chrome.runtime.sendMessage({msg: currentOptions.val[a].action, audible: currentOptions.val[a].audio, disabled: currentOptions.val[a].disabled}, function (resp) {});
             console.log("sending message");
         }
     }

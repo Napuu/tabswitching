@@ -1,22 +1,6 @@
 console.log("moikkamoI");
-
-// loadOptions();
-// function loadOptions() {
-    // chrome.storage.sync.get(["tabswitcher_options"], function (res) {
-        // console.log(res);
-        // let options = res["tabswitcher_options"];
-        // console.log(options);
-        // for (let i = 0; i < options.length; i++) {
-            // console.log(options[i]);
-
-        // }
-    // }); 
-// }
-
-// document.getElementById("reloadTabs").addEventListener("click", function (ev) {
-    // forceReload();
-// });
 function forceReload() {
+    if (!confirm("Are you sure you want to reload all tabs? (nonsaved changes will be lost)")) return;
     chrome.tabs.query({}, function (tabs) {
         for (let i = 0; i < tabs.length; i++) {
             chrome.tabs.reload(tabs[i].id); 
@@ -38,34 +22,36 @@ var fields = {};
 var configuration = [];
 
 function start() {
+    $("#rememberReload").hide();
     chrome.storage.sync.get(["configuration"], (res) => {
         configuration = res["configuration"];
         for (i in configuration) {
             let cc = configuration[i];
-                let id = "field" + nn;
-                addField(co, id);
-                nn++;
-                $("#" + id + "action1").val(cc["mode"]);
-                $("#" + id + "action2").val(cc["direction"]);
-                $("#" + id + "action3").val(cc["pattern"]);
-                $("#" + id + "action4").prop("checked", cc["audio"]);
-                $("#" + id + "shortcut1").val(cc["key"]);
-                $("#" + id + "shortcut2").prop("checked", cc["shiftKey"]);
-                $("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
-                $("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
-                $("#" + id + "shortcut8").prop("checked", cc["altKey"]);
-                // [>
-                // cc["mode"] = $("#" + id + "action1").val();
-                // cc["direction"] = $("#" + id + "action2").val();
-                // cc["pattern"] = $("#" + id + "action3").val();
-                // cc["audio"] = $("#" + id + "action4").is(":checked");
-                // cc["key"] = $("#" + id + "shortcut1").val();
-                // cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
-                // cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
-                // cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
-                // cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
-                // */
-                
+            let id = "field" + nn;
+            addField(co, id);
+            nn++;
+            $("#" + id + "action1").val(cc["mode"]);
+            $("#" + id + "action2").val(cc["direction"]);
+            $("#" + id + "action3").prop("value", cc["pattern"]).show();
+            $("#" + id + "action4").prop("checked", cc["audio"]);
+            $("#" + id + "shortcut1").val(cc["key"]);
+            $("#" + id + "shortcut2").prop("checked", cc["shiftKey"]);
+            $("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
+            $("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
+            $("#" + id + "shortcut8").prop("checked", cc["altKey"]);
+            $("#" + id + "disabled").prop("checked", cc["disabled"]);
+            // [>
+            // cc["mode"] = $("#" + id + "action1").val();
+            // cc["direction"] = $("#" + id + "action2").val();
+            // cc["pattern"] = $("#" + id + "action3").val();
+            // cc["audio"] = $("#" + id + "action4").is(":checked");
+            // cc["key"] = $("#" + id + "shortcut1").val();
+            // cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
+            // cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
+            // cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
+            // cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
+            // */
+            
         }
     });
     console.log("??");
@@ -79,10 +65,9 @@ function addField2() {
 }
 function addField(container, id) {  
     fields[id] = true;
-    $("#belowOptionsContainer").css("top", $(co).offset().top + $(co).height());
     let row = htmlToElements(
     "<div id='" + id +"'>" +
-        "<div class='row'>" + 
+        "<div class='row firstrow'>" + 
             "<div class='col-5'>" +
                 "Action" +
             "</div>" + 
@@ -137,6 +122,10 @@ function addField(container, id) {
                 "</div>" +
             "</div>" +
             "<div class='col-1'>" +
+                "<input id='" + id + "disabled' class='form-check-input' type='checkbox'></input>" +
+                "<label id='" + id + "disabledLabel' class='form-check-label'>Disabled</label>" +
+            "</div>" +
+            "<div class='col-1'>" +
                 "<button id='" + id + "delete' type='button' class='btn-danger'>Delete</button>" +
             "</div>" +
         "</div>" +
@@ -146,7 +135,8 @@ function addField(container, id) {
             "</div>" +
         "</div>" +
     "</div>");
-    $(container).append(row);
+    // $(container).append(row);
+    $(row).insertBefore("#lastrow");
 
 
     $("#" + id + "delete").on("click", ev => {
@@ -186,7 +176,10 @@ function addField(container, id) {
             $("#" + id + "action3, #" + id + "action4, #" + id + "action5").hide().removeClass("is-valid is-invalid").val(""); 
         } else {
             $("#" + id + "action2").hide(); 
-            $("#" + id + "action3, #" + id + "action4, #" + id + "action5").show().removeClass("is-valid is-invalid").val(""); 
+            // console.log(id);
+            // console.log(ev.target.value);
+            console.log("setting val to 0");
+            $("#" + id + "action3, #" + id + "action4, #" + id + "action5").show().removeClass("is-valid is-invalid");
         }
     });
 
@@ -243,8 +236,10 @@ function saveChanges() {
         console.log("able to save current changes");
         
         configuration = [];
+        let backgroundConfig = [];
         for (id in fields) {
             let cc = {};
+            let cc2 = {};
             cc["mode"] = $("#" + id + "action1").val();
             cc["direction"] = $("#" + id + "action2").val();
             cc["pattern"] = $("#" + id + "action3").val();
@@ -254,7 +249,29 @@ function saveChanges() {
             cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
             cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
             cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
+            cc["disabled"] = $("#" + id + "disabled").is(":checked");
             configuration.push(cc);
+
+            cc2.eventFeatures = {};
+            if (isNaN(cc["key"])) cc2.eventFeatures.code = "Key" + cc["key"].toUpperCase();
+            else cc2.eventFeatures.code = "Digit" + cc["key"];
+            cc2.eventFeatures.shiftKey = cc["shiftKey"];
+            cc2.eventFeatures.ctrlKey = cc["ctrlKey"];
+            cc2.eventFeatures.metaKey = cc["metaKey"];
+            cc2.eventFeatures.altKey = cc["altKey"];
+
+            cc2.disabled = cc["disabled"];
+            if (cc["mode"] == "move") {
+                cc2.action = "move";
+                if (cc["direction"] == "left") cc2.action += "Left";
+                else cc2.action += "Right";
+            } else {
+                cc2.action = "toggle" + cc["pattern"];
+            }
+
+            cc2.audio = cc["audio"];
+            console.log(cc2);
+            backgroundConfig.push(cc2);
             //let str = "[id^='" + id + "']";
             //$(str).each((i, element) => {
                 //console.log(i);
@@ -262,10 +279,13 @@ function saveChanges() {
             //});
             
         }
+        console.log(backgroundConfig);
         console.log(configuration);
+        chrome.storage.sync.set({"tabswitcher_options": backgroundConfig}, () => {});
         chrome.storage.sync.set({"configuration": configuration}, function() {
             // saved
         });
+        $("#rememberReload").show();
     }
 
     else {

@@ -23,6 +23,7 @@ chrome.tabs.onHighlighted.addListener(function (c) {
 var DEBUG = true;
 chrome.runtime.onMessage.addListener(function(request , sender, sendResponse) {
     let command = request.msg;
+    if (request.disabled) return;
     if (command.includes("move")) {
         getTabsCurrentWindow(function (tabs) {
             getActiveTab(function (currentTab) {
@@ -43,7 +44,7 @@ chrome.runtime.onMessage.addListener(function(request , sender, sendResponse) {
             getActiveTab(function (currentTab) {
                 var app = command.substring(6);
                 if (toggled.to != app) {
-                    var props = {windowType: "normal", currentWindow: true, title: ("*" + app + "*")};
+                    var props = {windowType: "normal", currentWindow: true, title: ("*" + app + "*"), audible: request.audible};
                     // if (app == "YouTube") props.audible = true;
                     chrome.tabs.query(props, function (tabs) {
                         activateTab(tabs[0].id);
