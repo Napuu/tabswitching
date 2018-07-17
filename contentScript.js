@@ -22,14 +22,14 @@ function loadOptions(_options, callback) {
 }
 
 document.addEventListener("keydown", ev => {
-    if (DEBUG) console.log(ev);
+    // if (DEBUG) console.log(ev);
     for (a in currentOptions.val) {
         let fail = false;
         // console.log(currentOptions.val[a]);
         let features = currentOptions.val[a].eventFeatures;
         // console.log(features);
         for (b in features) {
-            console.log(ev[b] + ", " + features[b]);
+            // console.log(ev[b] + ", " + features[b]);
             if (ev[b] != features[b]) fail = true;
             // console.log(features[features.keys()[i]]);
             // if (currentOptions[a].eventFeatures[b]

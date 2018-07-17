@@ -16,13 +16,19 @@ console.log("moikkamoI");
 // document.getElementById("reloadTabs").addEventListener("click", function (ev) {
     // forceReload();
 // });
-// function forceReload() {
-    // chrome.tabs.query({}, function (tabs) {
-        // for (let i = 0; i < tabs.length; i++) {
-            // chrome.tabs.reload(tabs[i].id); 
-        // }
-    // });
-// }
+function forceReload() {
+    chrome.tabs.query({}, function (tabs) {
+        for (let i = 0; i < tabs.length; i++) {
+            chrome.tabs.reload(tabs[i].id); 
+        }
+    });
+}
+
+
+$(document.body).ready(start);
+$("#reloadTabs").on("click", (ev) => { forceReload(); });
+$("#addButton").on("click", addField2);
+$("#saveButton").on("click", saveChanges);
 
 var co = $("#optionsContainer")[0];
 
@@ -32,39 +38,37 @@ var fields = {};
 var configuration = [];
 
 function start() {
-    //chrome.storage.sync.get(["configuration"], (res) => {
-        //configuration = res["configuration"];
-        //for (cc in configuration) {
-            //for (i in res) {
-                //let id = "field" + nn;
-                //addField(co, id);
-                //nn++;
-                //$("#" + id + "action1").val(cc["mode"]);
-                //$("#" + id + "action2").val(cc["direction"]);
-                //$("#" + id + "action3").val(cc["pattern"]);
-                //$("#" + id + "action4").prop("checked", cc["audio"]);
-                //$("#" + id + "shortcut1").val(cc["key"]);
-                //$("#" + id + "shortcut2").prop("checked", cc["shiftKey"]);
-                //$("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
-                //$("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
-                //$("#" + id + "shortcut8").prop("checked", cc["altKey"]);
-                //[>
-                //cc["mode"] = $("#" + id + "action1").val();
-                //cc["direction"] = $("#" + id + "action2").val();
-                //cc["pattern"] = $("#" + id + "action3").val();
-                //cc["audio"] = $("#" + id + "action4").is(":checked");
-                //cc["key"] = $("#" + id + "shortcut1").val();
-                //cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
-                //cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
-                //cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
-                //cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
-                //*/
+    chrome.storage.sync.get(["configuration"], (res) => {
+        configuration = res["configuration"];
+        for (i in configuration) {
+            let cc = configuration[i];
+                let id = "field" + nn;
+                addField(co, id);
+                nn++;
+                $("#" + id + "action1").val(cc["mode"]);
+                $("#" + id + "action2").val(cc["direction"]);
+                $("#" + id + "action3").val(cc["pattern"]);
+                $("#" + id + "action4").prop("checked", cc["audio"]);
+                $("#" + id + "shortcut1").val(cc["key"]);
+                $("#" + id + "shortcut2").prop("checked", cc["shiftKey"]);
+                $("#" + id + "shortcut4").prop("checked", cc["ctrlKey"]);
+                $("#" + id + "shortcut6").prop("checked", cc["metaKey"]);
+                $("#" + id + "shortcut8").prop("checked", cc["altKey"]);
+                // [>
+                // cc["mode"] = $("#" + id + "action1").val();
+                // cc["direction"] = $("#" + id + "action2").val();
+                // cc["pattern"] = $("#" + id + "action3").val();
+                // cc["audio"] = $("#" + id + "action4").is(":checked");
+                // cc["key"] = $("#" + id + "shortcut1").val();
+                // cc["shiftKey"] = $("#" + id + "shortcut2").is(":checked");
+                // cc["ctrlKey"] = $("#" + id + "shortcut4").is(":checked");
+                // cc["metaKey"] = $("#" + id + "shortcut6").is(":checked");
+                // cc["altKey"] = $("#" + id + "shortcut8").is(":checked");
+                // */
                 
-            //}
-        //}
-    //});
-    addField2();
-    addField2();
+        }
+    });
+    console.log("??");
     
 }
 var nn = 0;
@@ -259,9 +263,9 @@ function saveChanges() {
             
         }
         console.log(configuration);
-        //chrome.storage.sync.set({"configuration": configuration}, function() {
-            //saved
-        //});
+        chrome.storage.sync.set({"configuration": configuration}, function() {
+            // saved
+        });
     }
 
     else {
