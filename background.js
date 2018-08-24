@@ -4,18 +4,34 @@ var toggled = {"to": -1, "from": -1};
 chrome.tabs.onHighlighted.addListener(function (c) {
     getTabsCurrentWindow(function (tabs) {
         getActiveTab(function (currentTab) {   
-            if (toggled.to != -1 && !currentTab.title.includes(toggled.to) && currentTab.id != toggled.from.id) {
-                toggled.to = -1;
-                toggled.from = -1;
-            }
+            // if (toggled.to != -1 && currentTab.id != toggled.from.id) {
+                // toggled.to = -1;
+                // toggled.from = -1;
+            // }
         });
     });
 });
-
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if (request.message == "reloadOptions") {
+            loadOptions();
+        }
+    });
+// there is actually exactly one option right now 
+var custom1 = "";
+function loadOptions() {
+    // console.log("options loaded");
+    chrome.storage.local.get(["custom1"], res => {
+         custom1 = res.custom1;
+    });
+}
+loadOptions();
 chrome.commands.onCommand.addListener(function(command) {
     if (command.includes("move")) {
         getTabsCurrentWindow(function (tabs) {
             getActiveTab(function (currentTab) {
+                toggled.to = -1;
+                toggled.from = -1;
                 var newIndex = currentTab.index;
                 if (command == "moveleft") {
                     newIndex--;
@@ -31,13 +47,24 @@ chrome.commands.onCommand.addListener(function(command) {
     } else if (command.includes("toggle")) {
         getTabsCurrentWindow(function (tabs) {
             getActiveTab(function (currentTab) {
-                var app = command.substring(6);
-                if (toggled.to != app) {
-                    var props = {windowType: "normal", currentWindow: true, title: ("*" + app + "*")};
-                    // if (app == "YouTube") props.audible = true;
+                // this is going to fetched from extensions own settings soontm
+                // console.log("current situation before doing anything");
+                // console.log(toggled);
+                // console.log(command);
+
+                // console.log("changes start here");
+                var props = {windowType: "normal", currentWindow: true};
+                if (command == "toggle1") {
+                    // app = "WhatsApp";
+                    props.title = "*" + custom1 + "*";
+                } else if (command == "toggle2") {
+                    props.audible = true;
+                }
+                if (toggled.to != command) {
                     chrome.tabs.query(props, function (tabs) {
+                        if (tabs.length == 0) return;
                         activateTab(tabs[0].id);
-                        toggled.to = app;
+                        toggled.to = command;
                         toggled.from = currentTab;
                     }); 
                 } else {
@@ -45,6 +72,8 @@ chrome.commands.onCommand.addListener(function(command) {
                     toggled.to = -1;
                     toggled.from = -1;
                 }
+                // console.log("changes made");
+                // console.log(toggled);
             });
         })
     }

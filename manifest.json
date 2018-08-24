@@ -2,12 +2,14 @@
     "name": "tabswitching",
     "version": "1.0",
     "description": "tabswitching",
+    "options_page": "options.html",
     "background": {
         "scripts": ["background.js"],
         "persistent": true 
     },
     "permissions": [
-        "tabs"
+        "tabs",
+        "storage"
     ],
     "commands": {
         "moveright": {
@@ -22,17 +24,17 @@
             },
             "description": "left"
         },
-        "toggleWhatsApp": {
+        "toggle1": {
             "suggested_key": {
                 "default": "Alt+W"
             },
-            "description": "whatsapp"
+            "description": "custom1"
         },
-        "toggleTelegram": {
+        "toggle2": {
             "suggested_key": {
                 "default": "Alt+T"
             },
-            "description": "telegram"
+            "description": "custom2"
         }
     },
     "manifest_version": 2
