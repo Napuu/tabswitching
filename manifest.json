@@ -1,7 +1,7 @@
 {
-    "name": "tabswitching",
-    "version": "1.0",
-    "description": "tabswitching",
+    "name": "Simple Tab Switcher",
+    "version": "1.0.1",
+    "description": "Move quickly between tabs.",
     "options_page": "options.html",
     "background": {
         "scripts": ["background.js"],
