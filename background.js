@@ -4,10 +4,11 @@ var toggled = {"to": -1, "from": -1};
 chrome.tabs.onHighlighted.addListener(function (c) {
     getTabsCurrentWindow(function (tabs) {
         getActiveTab(function (currentTab) {   
-            // if (toggled.to != -1 && currentTab.id != toggled.from.id) {
+            if (toggled.to != -1 && currentTab.id != toggled.from.id) {
                 // toggled.to = -1;
                 // toggled.from = -1;
-            // }
+                console.log("??");
+            }
         });
     });
 });
@@ -89,7 +90,11 @@ function getActiveTab(callback) {
 }
 
 function activateTab(tabId) {
+    // console.log(tabId
     chrome.tabs.update(tabId, {active: true});
+    getActiveTab(currentTab => {
+        console.log(currentTab.id + "; " + tabId); 
+    });
 }
 
 function getTabsCurrentWindow(callback) {
