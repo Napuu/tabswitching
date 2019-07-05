@@ -1,0 +1,38 @@
+{
+
+    "manifest_version": 2,
+    "name": "Tabswitcher",
+    "version": "1.0",
+  
+    "description": "Move between tags in a vim-like way",
+    "permissions": ["tabs"],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "commands": {
+        "moveright": {
+            "suggested_key": {
+                "default": "Alt+L"
+            },
+            "description": "right"
+        },
+        "moveleft": {
+            "suggested_key": {
+                "default": "Alt+H"
+            },
+            "description": "left"
+        },
+        "toggle1": {
+            "suggested_key": {
+                "default": "Alt+W"
+            },
+            "description": "custom1"
+        },
+        "toggle2": {
+            "suggested_key": {
+                "default": "Alt+T"
+            },
+            "description": "custom2"
+        }
+    }
+}

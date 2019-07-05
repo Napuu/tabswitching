@@ -1,0 +1,1 @@
+# Tabswitcher (simplified firefox version)
